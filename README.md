@@ -7,7 +7,7 @@ This repository contains Python 3 routines that train two Least Squares Generati
 LSGAN_v1.py /LSGAN_v2.py are used to train first/second architecture of [1].
 LSGAN_generate.py is used to generate samples from model LSGAN_v2.py after its training (so, use above mentioned routine before this).
 
-Make sure 'test_32x32.mat' [2] is in the same folder. 20% of this file was used due to computational limitations. It's encouraged to use full 'train_32x32.mat'.
+Make sure 'test_32x32.mat' [2] is in the same folder. Only 20% of this file was used for training due to computational limitations. It's encouraged to use full 'train_32x32.mat'.
 
 # Results
 
