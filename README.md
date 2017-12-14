@@ -1,6 +1,6 @@
 # LSGAN for SVHN
 
-This repository contains Python 3 routines that train two Least Squares Generative Adversarial Networks - LSGAN, for Google Street View House Number - SVHN database. The LSGAN architectures herein used are those described in [1]. One routine that generate samples from one of the models is also avaliable.
+This repository contains Python 3 routines (tensorflow) that train two Least Squares Generative Adversarial Networks - LSGAN, for Google Street View House Number - SVHN database. The LSGAN architectures herein used are those described in [1]. One routine that generate samples from one of the models is also avaliable.
 
 # File description
 
