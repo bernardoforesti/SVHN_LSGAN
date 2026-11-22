@@ -12,9 +12,8 @@ import os
 import numpy as np
 import torch
 import torch.nn as nn
-from sklearn.preprocessing import LabelBinarizer
 
-from lsgan_common import (Conv, ConvTranspose, FullyConnected, create, fetch_data,
+from lsgan_common import (Conv, ConvTranspose, FullyConnected, create, fetch_data, one_hot_labels,
                           get_device, leaky_relu, sample_z, save_imgs)
 
 N_INPUTS_G = 64   # Shape of random input
@@ -130,7 +129,7 @@ def main(mat_file='test_32x32.mat'):
     X_tr_full, y_tr_full = create(mat_file)
     ratio_tr = int(0.2 * X_tr_full.shape[0])
     # y_tr as an array with shape=(m x n_classes)
-    y_tr = np.array(LabelBinarizer().fit_transform(y_tr_full[0:ratio_tr]))
+    y_tr = one_hot_labels(y_tr_full[0:ratio_tr])
     train(X_tr_full[0:ratio_tr], y_tr)
 
 
