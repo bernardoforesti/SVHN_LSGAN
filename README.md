@@ -4,10 +4,26 @@ This repository contains Python 3 routines (tensorflow) that train two Least Squ
 
 # File description
 
-LSGAN_v1.py /LSGAN_v2.py are used to train first/second architecture of [1].
-LSGAN_generate.py is used to generate samples from model LSGAN_v2.py after its training (so, use above mentioned routine before this).
+The code is written in **PyTorch** (it runs on the GPU automatically if one is available, otherwise on the CPU).
+
+- `lsgan_v1.py` / `lsgan_v2.py` train the first/second architecture of [1] (v1 is unconditional; v2 is conditional, so the generated digit can be chosen).
+- `lsgan_generate.py` generates samples from the model trained by `lsgan_v2.py` (train it first).
+- `lsgan_common.py` holds shared helpers (data loading, TF-slim-like layers, plotting).
+- `tests/` has a short CPU smoke test using synthetic data.
+- `legacy/` keeps the original TensorFlow 1.x scripts (`LSGAN_v1.py`, `LSGAN_v2.py`, `LSGAN_generate.py`), unchanged.
+
+# How to run
+
+```
+pip install -r requirements.txt
+python lsgan_v1.py          # or: python lsgan_v2.py
+python lsgan_generate.py    # after lsgan_v2.py
+python -m pytest tests      # quick sanity check, no dataset needed
+```
 
 Make sure 'test_32x32.mat' [2] is in the same folder. Only 20% of this file was used for training due to computational limitations. It's encouraged to use full 'train_32x32.mat'.
+
+Models are saved with `torch.save` to `LSGAN_v1.pt` / `LSGAN_v2.pt` (generator, discriminator, optimizers and last step) and loaded with `torch.load`; if the file exists, training resumes from it.
 
 # Results
 
