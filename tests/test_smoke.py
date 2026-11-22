@@ -5,7 +5,6 @@ import sys
 import numpy as np
 import scipy.io as spio
 import torch
-from sklearn.preprocessing import LabelBinarizer
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -58,7 +57,7 @@ def test_v2_train_resume_and_generate(tmp_path, monkeypatch):
     path = str(tmp_path / 'syn.mat')
     synthetic_mat(path)
     X, y = lsgan_common.create(path)
-    y = np.array(LabelBinarizer().fit_transform(y))
+    y = lsgan_common.one_hot_labels(y)
     ckpt = str(tmp_path / 'v2.pt')
     lsgan_v2.train(X, y, n_steps=1, mb_size=32, print_steps=1, ckpt_path=ckpt,
                    out_dir=str(tmp_path), device=CPU)
@@ -71,3 +70,20 @@ def test_v2_train_resume_and_generate(tmp_path, monkeypatch):
     G_new, y_in = lsgan_generate.generate(ckpt_path=ckpt, n_samples=50, device=CPU)
     assert G_new.shape == (50, 3, 32, 32) and y_in.shape == (50, 10)
     assert os.path.isfile(str(tmp_path / 'LSGAN_v2_tagmixed.png'))
+
+
+def test_label_mapping():
+    # SVHN: digit 0 has label 10; column k of the one-hot must be digit k
+    oh = lsgan_common.one_hot_labels(np.array([10, 1, 3, 9]))
+    assert oh.shape == (4, 10)
+    assert oh[0].argmax() == 0 and oh[1].argmax() == 1
+    assert oh[2].argmax() == 3 and oh[3].argmax() == 9
+    assert (oh.sum(axis=1) == 1).all()
+    # always 10 columns, even if some digits are missing
+    assert lsgan_common.one_hot_labels(np.array([[2], [2]])).shape == (2, 10)
+
+
+def test_generate_labels_match_digits():
+    y = lsgan_generate.create_y(20).all_class()
+    assert y.shape == (20, 10)
+    assert (y.argmax(axis=1) == np.repeat(np.arange(10), 2)).all()

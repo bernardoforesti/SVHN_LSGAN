@@ -42,6 +42,16 @@ def create(file_name):
     return X_tr.astype(np.float32), y_tr
 
 
+def one_hot_labels(y, n_classes=10):
+    """
+    One-hot encodes SVHN labels so that column k is the digit k (always n_classes columns).
+    SVHN stores the digit 0 as label 10, so label 10 is mapped to 0 first.
+    """
+    y = np.asarray(y).astype(int).reshape(-1)
+    y = np.where(y == 10, 0, y)
+    return np.eye(n_classes)[y]
+
+
 def fetch_data(data_X, data_y, batch_index, batch_size):
     """Creates batches for a given 'data'."""
     begin = batch_index * batch_size

@@ -9,9 +9,8 @@ author: Bernardo Foresti (please cite)
 """
 import numpy as np
 import torch
-from sklearn.preprocessing import LabelBinarizer
 
-from lsgan_common import create, get_device, sample_z, save_imgs
+from lsgan_common import create, get_device, one_hot_labels, sample_z, save_imgs
 from lsgan_v2 import N_INPUTS_G, Generator
 
 
@@ -29,7 +28,7 @@ class create_y(object):
         """Given a mb_size, creates int(mb_size/n) one-hot label tags for each class."""
         small_mb = int(self.mb / self.n)
         y = np.repeat(self.classes, small_mb).reshape(-1, 1)
-        return np.array(LabelBinarizer().fit_transform(y))
+        return one_hot_labels(y, self.n)
 
 
 def generate(ckpt_path='LSGAN_v2.pt', n_samples=None, tag='mixed', device=None):
