@@ -1,0 +1,7 @@
+__pycache__/
+.pytest_cache/
+*.mat
+*.pt
+*.ckpt*
+LSGAN_v*_step*.png
+LSGAN_v2_tag*.png
