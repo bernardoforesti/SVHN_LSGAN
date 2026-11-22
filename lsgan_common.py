@@ -9,8 +9,13 @@ author: Bernardo Foresti (please cite)
 """
 import math
 
-import matplotlib.gridspec as gridspec
-import matplotlib.pyplot as plt
+import matplotlib
+
+# Só salvamos imagens em arquivo; o backend Agg não depende de Tk/interface gráfica.
+matplotlib.use("Agg")
+
+import matplotlib.gridspec as gridspec  # noqa: E402
+import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np
 import scipy.io as spio
 import torch
